@@ -4,20 +4,18 @@ import CollectionService from 'services/collection';
 export default class CollectionController {
   private _service: CollectionService;
 
-  constructor(private app: Application) {
+  constructor(public app: Application) {
     this._service = new CollectionService();
     this.routes();
   }
 
   public routes() {
-    this.app.route('/').get(this._service.getCollections);
-
     this.app.route('/collections').get(this._service.getCollections);
 
-    this.app.route('/collection').post(this._service.createCollection);
+    this.app.route('/collections').post(this._service.createCollection);
 
-    this.app.route('/collection/:id').patch(this._service.patchCollection);
+    this.app.route('/collections/:id').patch(this._service.patchCollection);
 
-    this.app.route('/collection/:id').delete(this._service.deleteCollection);
+    this.app.route('/collections/:id').delete(this._service.deleteCollection);
   }
 }

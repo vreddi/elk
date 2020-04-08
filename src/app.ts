@@ -42,11 +42,6 @@ class App {
         user,
         pass,
       });
-
-      mongoose.connection
-        .once('open', () => console.log('Connected to MLab instance.'))
-        .on('error', error => console.log('Error connecting to MLab: ', error))
-        .on('close', () => console.log('Disconnected from MLab instance.'));
     });
   }
 

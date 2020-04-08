@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
 const CollectionSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true },
+  videos: [String],
 },
 {
   timestamps: {
