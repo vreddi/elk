@@ -22,4 +22,10 @@ export default class BaseService {
       }
     }
   }
+
+  public getErrorResponse(message: string): Object {
+    return {
+      message
+    };
+  }
 }
