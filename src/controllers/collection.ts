@@ -4,7 +4,7 @@ import CollectionService from 'services/collection';
 export default class CollectionController {
   private _service: CollectionService;
 
-  constructor(private app: Application) {
+  constructor(public app: Application) {
     this._service = new CollectionService();
     this.routes();
   }

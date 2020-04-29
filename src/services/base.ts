@@ -3,11 +3,11 @@ import { Response } from "express";
 
 export default class BaseService {
   public handleDBResponse(res: Response) {
-    return (error: Error, collectionDoc: MongooseDocument) => {
+    return (error: Error, doc: MongooseDocument) => {
       if (error) {
-        res.send(error);
+        res.status(400).send(error);
       }
-      res.json(collectionDoc);
+      res.json(doc);
     }
   }
 

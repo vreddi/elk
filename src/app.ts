@@ -5,19 +5,23 @@ import CollectionController from 'controllers/collection';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
+import UserController from 'controllers/user';
 
 config();
 
 class App {
   public app: Application;
   private _collectionController: CollectionController;
+  private _userController: UserController;
 
   constructor() {
     this.app = express();
+
     this.setConfig();
     this.setMongooseConfig();
 
     this._collectionController = new CollectionController(this.app);
+    this._userController = new UserController(this.app);
   }
 
   private setMongooseConfig() {
