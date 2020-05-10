@@ -6,6 +6,7 @@ import { ValidateSignup, ValidateLogin } from "validations/user.validations";
 import { IUser } from "types/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { generateAccessToken } from "./token";
 
 export default class UserService extends BaseService {
   constructor() {
@@ -55,6 +56,8 @@ export default class UserService extends BaseService {
 
   /**
    * Logs-in a valid user so that the user can access the service.
+   * @param req Resquest object
+   * @param res Response object
    */
   public login = async (req: Request<any, any, { email: string, password: string}>, res: Response) => {
     // Check for basic user property validations
@@ -77,22 +80,18 @@ export default class UserService extends BaseService {
       return res.status(400).send(this.getErrorResponse("The password is incorrect."));
     }
 
-    const token = jwt.sign(
-      {
-        id: user._id,
-        userName: user.userName,
-        email: user.email
-      },
-      process.env.TOKEN_SECRET as string
-    );
-
-    res.header("auth-token", token).send(token);
-
-    res.send({
+    const token = generateAccessToken({
       id: user._id,
       userName: user.userName,
       email: user.email
     });
+
+    res.header("Authorization", `Bearer ${token}`)
+      .send({
+        id: user._id,
+        userName: user.userName,
+        email: user.email
+      });
   }
 
   public deleteUser = async (req: Request, res: Response) => {

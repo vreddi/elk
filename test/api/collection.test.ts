@@ -2,10 +2,36 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import App from '../../src/app';
 
-describe('Test', () => {
+describe.only('📁 Collection', () => {
   let app: request.SuperTest<request.Test>;
-  beforeAll(() => {
+  let authToken: string;
+
+  beforeAll((done) => {
     app = request(App);
+
+    // Create test account
+    app
+      .post('user/signup')
+      .send({
+        userName: 'test',
+        email: 'test@test.com',
+        password: 'testingtestingtesting@testing'
+      })
+      .then(() => (
+        app
+          .post('user/login')
+          .send({
+            email: 'test@test.com',
+            password: 'testingtestingtesting@testing'
+          })
+      ))
+      .then(res => {
+        authToken = res.header['Authorization'];
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => done());
   })
 
   it('GET /collections', (done) => {
@@ -14,7 +40,6 @@ describe('Test', () => {
       .send()
       .then(res => {
         const body = res.body;
-
         expect(body).toStrictEqual([]);
       })
       .finally(() => done())
@@ -23,6 +48,7 @@ describe('Test', () => {
   it('POST /collection', (done) => {
     app
       .post('/collection')
+      .set('Authorization', authToken)
       .send({ name: "Football" })
       .then(res => {
         const body = res.body;
@@ -39,5 +65,5 @@ describe('Test', () => {
   afterAll((done) => {
     app.removeAllListeners();
     mongoose.connection.close().finally(() => done());
-  })
+  });
 });

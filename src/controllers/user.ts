@@ -2,6 +2,7 @@
 import { Application, Router } from 'express';
 import UserService from "services/user";
 import { BaseController } from './base';
+import { verifyToken } from 'services/token';
 
 export default class UserController extends BaseController {
   private _service: UserService;
@@ -14,10 +15,12 @@ export default class UserController extends BaseController {
   }
 
   public routes() {
-    this.app.route('/user/signup').post(this._service.createUser);
+    this.router.post("/user/signup", this._service.createUser);
 
-    this.app.route('/user/:id').delete(this._service.deleteUser);
+    this.router.delete("/user/:id", verifyToken, this._service.deleteUser);
 
-    this.app.route('/user/login').post(this._service.login);
+    this.router.post("/user/:id/token", verifyToken, )
+
+    this.app.route("/user/login").post(this._service.login);
   }
 }

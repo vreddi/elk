@@ -36,6 +36,7 @@ module.exports = {
     "controllers/(.*)": "<rootDir>/src/controllers/$1",
     "services/(.*)": "<rootDir>/src/services/$1",
     "models/(.*)": "<rootDir>/src/models/$1",
+    "validations/(.*)": "<rootDir>/src/validations/$1"
   },
 
   testEnvironment: "node",

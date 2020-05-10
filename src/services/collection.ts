@@ -8,11 +8,14 @@ export default class CollectionService extends BaseService {
   }
 
   public getCollections = (req: Request, res: Response) => {
-    Collection.find({}, this.handleDBResponse(res));
+    Collection.find({ userId: (req as any).user.id }, this.handleDBResponse(res));
   }
 
   public createCollection = (req: Request, res: Response)  =>{
-    const collection = new Collection(req.body);
+    const collection = new Collection({
+      name: req.body.name,
+      userId: (req as any).user.id
+    });
 
     collection.save(this.handleDBResponse(res));
   }

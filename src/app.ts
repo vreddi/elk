@@ -40,12 +40,15 @@ class App {
     }
 
     uri.then(uris => {
-      mongoose.connect(uris as string, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        user,
-        pass,
-      });
+      mongoose.connect(
+        uris as string,
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+          user,
+          pass,
+        }
+      );
 
       mongoose.connection
         .once('open', () => console.log('Connected to MLab instance.'))
